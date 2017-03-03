@@ -1,1 +1,1 @@
-Game.ScriptLogMsg("Jo Was Geht");
+Game.ScriptLogMsg("Health: "+Entities.GetHealth(EntIndex));
