@@ -1,1 +1,1 @@
-reg -k HKCU\Software\Microsoft\Windows\CurrentVersion\Run -v <KEYNAME> -t REG_SZ -d <PATH>
+reg setval -k HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -v <KEYNAME> -t REG_SZ -d <PATH>
