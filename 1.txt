@@ -1,0 +1,59 @@
+1.1Es handelt sich hierbei um eine Stern Topologie (1  Punkt). Bei der 
+Stern Topologie sind die Übertragungsstationen an einem zentralen 
+Knoten angeschlossen
+
+1.2Eine Broadcast-Domäne ist ein logischer Verbund von Netzwerkgeräten in einem LAN, der sich dadurch auszeichnet, dass ein Broadcast alle Domänenteilnehmer erreicht. Durch den Einsatz von VLANs können aus einer einzigen Broadcastdomäne mehre kleine entwickelt werden.
+
+1.3Eine Broadcastdomäne
+
+1.4Bei der Netzadresse 172.16.0.0 / 16 handelt es sich um eine private Klasse B Adresse.
+
+1.5 224 240 224 224 248 192 240 240 240 240
+
+2.1Ein VLAN ist eine Broadcastdomäne (Subnet), die einen oder mehrere Switches umfassen kann. 
+
+2.2Vorteile, z.B.  
+    Einfaches Ändern der LAN-Konfiguration 
+    Einfaches Steuern des Netzwerkverkehrs 
+    Verbessern der Sicherheit 
+
+2.3 Port-Basiert 
+    MAC-Basiert 
+    Layer 3 -Basiert 
+
+2.4 Kein PC kann einen anderen PC anpingen  
+    Switch 1 kann erfolgreich Switch 2 anpingen 
+
+2.5 Das native VLAN auf dem Trunk zwischen S1 und S2 is fehlerhaft. 
+    Der Trunk-Mode zwischen S1 und S2 ist nicht korrekt. 
+    Die erlaubten VLANs auf dem Trunk zwischen S1 und S2 sind falsch konfiguriert. 
+    Falsch konfigurierte IP-Adresse für VLAN 10 
+    Ein Link auf dem Pfad zwischen PC1 und WEB-Server ist runtergefahren. 
+
+2.6 C, F, J (3 Punkte I) 
+    Bei diesen Leitungen handelt es sich um Trun-Leitungen. Auf Trunk-Leitungen werden die Daten mehrer VLANs transportiert. Anhand von VLAN-Tags kann eine Zuordnung zu den VLANs erfolgen. Das VLAN-Tag wird hinter der MAC-Adresse des Senders im Ethernet-Header eingeführt
+
+3.1 TABELLE
+
+3.2 Der Router liefert die Mac-Adresse die die MAC-Adresse aus dem physischen Interface Fa0/0
+
+3.3 TABELLE
+
+3.4-RIPv2 
+    Max Hop count 15 
+    Distanz-Vektor-Protokoll 
+    Metrik nur der Hop 
+    Unterstützt CIDR 
+    -OSPF 
+    Geringe Konvergenz 
+    Link-State-Protokoll 
+    Metrik beinhaltet Zuverlässigkeit und Kosten 
+    Unterstützt mehrere Routen zu einem Ziel
+
+4.1Die Verbindung zwischen den drei Switchen ergibt eine Schleife. Broadcastpakete könnten hier einen Broadcast-Sturm verursachen. Spanning-Tree stellt sicher, dass jeweils nur ein Weg durch das Netzwerk verfügbar ist, in dem einige links deaktiviert werden, somit kann ein Netz ohne Schleifen erzeugt werden. Im Fehlerfall wird durch Spanning-Tree angepasst, welche Netzwerkleitungen aktiv sind.
+
+4.2 Switch D ist die Root-Bridge. Alle vier Switches haben dieselbe Bridge Priority. Da die Bridge-ID aus der Bridge Priority gefolgt von der MAC-Adresse besteht, wird der Switch mit der niedrigsten MAC-Adresse zur Root-Bridge. Im gegebenen Beispiel hat Switch D die niedrigste MAC-Adresse.
+
+Root(R) Blocked(B) Designated(D)
+b)R B B D R B D R D D D D
+b)19 4 19 4 19 4
