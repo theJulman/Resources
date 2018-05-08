@@ -1,0 +1,630 @@
+
+Übersicht
+Im Szenario wird das Projekt allgemein beschrieben und erläutert.
+Das Projekt selbst ist in einzelne Handlungsschritte gegliedert, die jeweils mit einer Dokumentation abschließen. Zu Beginn jeder Phase werden alle Anforderungen genannt, die erfüllt werden müssen.
+Alle Details, die nicht explizit angesprochen werden, können und sollen von Ihnen selbst entschieden und verwendet werden.
+Anforderungen	
+Folgende Aufgaben müssen im Rahmen der praktischen Abschlussprüfung ausgeführt werden:
+Aus dem Szenario ein Netzwerk entwickeln
+Konfiguration von RIPv2 (Routing Information Protocol) als Routing Protokoll
+Konfiguration von VLANs und des IEEE 802.1Q- Trunkings
+Port Security auf den eingesetzten Switches
+Konfigurieren von PPP (Point-to-Point-Protocol)
+Verwendung von VLSM (variable-length subnet mask)
+Konfigurieren von DHCP (Dynamic Host Configuration Protocol)
+Konfigurieren eines Etherchannels
+Anlegen und Anwenden von ACLs  (Access Control Lists) für entsprechende Router und Schnittstellen
+Die Möglichkeit, die aktuelle Routerkonfiguration auf einem FTP-Server zu speichern
+Die Möglichkeit, Layer 2 und Layer 3 Koppelelemente mittels SSHv2 remote zu verwalten.
+Überprüfen aller Konfigurationen auf ordnungsgemäße Funktion hinsichtlich der im Szenario genannten Vorgaben
+Erstellen einer detaillierten Dokumentation in vorgeschriebener Form
+Speichern der Dokumentation. Folgende Anmerkung dazu: Erstellen Sie auf ihren Desktop einen Ordner mit der Bezeichnung Nachname, Vorname. 
+
+
+
+
+
+
+
+
+
+Szenario
+Die IT-Consulting GmbH & Co. KG hat den Auftrag, an mehreren Standorten ein Netz zu entwerfen und zu implementieren . Der Kunde unterhält im  Standort Berlin in vier Bezirken        ( Spandau 150 Geräte), Köpenick (Web-Server), Mitte und Lichtenberg (Mitte: 170 Geräte im Zweig Verwaltung,  120 Geräte im Zweig Administration). Verwaltung und Administration stellen jeweils ein VLAN dar. Verwaltung  VLAN ID 100, Administration  VLAN ID 666.
+Alle Standorte sind über gemietete serielle Leitungen miteinander verbunden.
+Die Leitung zum Standort Mitte wird mit PPP betrieben. An allen anderen Standorten wird als Routingprotokoll RIP Version 2 verwendet.
+Außerdem soll die Möglichkeit bestehen, die aktuelle Routerkonfiguration für den Standort Mitte auf einen FTP- Server zu speichern. Die IP- Adresse für den FTP-Server lautet 192.168.120.120/24.
+Da das Propagieren von statischen Routen im Programm Packet Tracer  nicht möglich ist, soll in jedem Standort eine statische Default- Route ins Internet gesetzt werden.
+Am Standort Lichtenberg ist ein großes und komplexes LAN implementiert. Auf Grund der Größe und Komplexität dieses LANs wurde von den Verantwortlichen im Unternehmen beschlossen, drei VLANs einzurichten, um Broadcasts zu steuern, die Sicherheit zu erhöhen und Benutzer in logische Gruppen einzuteilen (600 Geräte gesamt: 250 Geräte in der Abteilung Marketing  VLAN10, 200 Geräte in der Abteilung Vertrieb  VLAN20, 150 Geräte in der Abteilung Konstruktion VLAN30, Etherchannel zwischen den OSI-Layer 2 Koppelelementen).
+Weiterhin muss die Möglichkeit für den Standort Lichtenberg bestehen, die aktuelle Routerkonfiguration auf einen FTP- Server zu speichern. Der FTP-Server ist unter der            IP- Adresse 192.168.220.120/24 zu erreichen.
+Im gesamten Netz sollen private Adressen und DHCP verwendet werden.
+Für die Anbindung an das Internet ist die Implementierung von NAT erforderlich, da der Kunde nur eine öffentliche Klasse- C- Adresse (198.65.17.0/23) besitzt.
+Der Internetzugang aus dem Firmennetz soll auf Web- Datenverkehr beschränkt werden. Im Firmennetz sind alle Protokolle zulässig. Aus dem Internet soll nur auf den Firmenwebserver (HTTP) zugegriffen werden können.
+
+
+
+
+
+
+
+Obwohl private Adressen (gemäß RFC 1918) verwendet werden, legen die Verantwortlichen Wert auf ein effizientes Design und sparsamen Adressverbrauch, d.h. verwenden Sie VLSM.
+Die physikalische Topologie dient als Übersicht:
+
+
+
+ 
+
+
+
+Handlungsschritt 1:	18 Punkte
+Erstellen eines detaillierten Netzwerkplanes (Logische Topologie)
+Erstellen Sie mit Hilfe von VISIO und/oder MS- Office die logische Topologie und dokumentieren Sie ihre Überlegungen! Zeichnen Sie die VLANs ein, dokumentieren Sie die verwendeten Ports, bei seriellen Verbindungen bezeichnen Sie DCE/DTE, IP-Adressen (Hosts und Schnittstellen), Namen der Koppelelemente und Hosts.
+Hinweis:	Standort Köpenick  WEB Server, Verbindung Köpenick WEB- Server  Internet (Köpenick  Spandau, Lichtenberg)
+	Standort Spandau  Firmen WEB- Server, Hosts mit H1, H2 usw. bezeichnen (Spandau  Köpenick)
+	Standort Mitte  Aufgeteilt in VLAN Administration und VLAN Verwaltung (Mitte  Lichtenberg) und FTP Server mit Namen „FTP_Mitte“
+Standort Lichtenberg  drei VLANs, z.B. Switch 1 Hosts:PC10 im VLAN10, PC20 im VLAN20, PC30 im VLAN30 usw. (Lichtenberg  Köpenick, Mitte) und FTP Server mit Namen „FTP_Lichtenberg“.
+	Beschriften Sie die einzelnen Standorte  Anzahl Geräte usw.
+	Vergessen Sie nicht, eine Textbox mit Ihren Namen und Datum einzufügen.
+Entscheiden Sie selber, welche Geräte zum Einsatz kommen, wie Sie ausgestattet    werden (Module für Router) und welche Schnittstellen verwendet werden. Versuchen Sie ein möglichst performantes Netz zu erstellen. Die seriellen Leitungen können Sie mit maximaler Bandbreite betreiben.
+Drucken Sie das Ergebnis aus und fügen es Ihren Unterlagen zu!
+Speichern Sie das Ergebnis auf einen USB-Datenträger!
+
+
+
+
+
+
+
+
+
+
+Handlungsschritt 2:	20 Punkte
+Ermitteln eines IP- Adressierungsschemas
+Gehen Sie bei der Ausführung von Handlungsschritt 2 folgendermaßen vor:
+Verwenden Sie für die interne Adressierung das Klasse-B-Netz 172.16.0.0/16. 
+
+Berechnen Sie die Subnetze mit VLSM (Rechenweg notwendig)!
+
+Weisen Sie /30- Subnetze allen seriellen Schnittstellen zu und verwenden Sie dabei die letzten verfügbaren Subnetze.
+
+Weisen Sie dem Mitte - LAN (unterteilt in zwei Subnetze/VLANs mit insgesamt 390 Geräten) entsprechende Subnetze zu.
+
+Weisen Sie dem Lichtenberg - LAN (unterteilt in drei Subnetze/VLANs mit insgesamt 600 Geräten), entsprechende Subnetze zu.
+
+Weisen Sie dem Spandau - LAN , das über 150 Geräte verfügt, ein entsprechend großes Subnetz zu.
+
+Der Firmen WEB - Server hat eine feste Adresse (kein DHCP). Er verwendet die höchste Adresse im Spandau - LAN.
+
+Dokumentieren Sie alle Schnittstellen- und Adressinformationen in der Tabelle auf der nächsten Seite.
+
+ Diese Dokumentation dient als Ergebnis für Handlungsschritt 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+Name und Schnittstelle	IP- Adresse und Subnetzmaske
+z.B.Mitte interface FastEthernet0/0	ip address …
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+Handlungsschritt 3:	15 Punkte
+Konfiguration der Router
+Gehen Sie bei der Ausführung von Handlungsschritt 3 folgendermaßen vor:
+Richten Sie für alle Router Host- Namen und Enable – Secret - Passworte (verwenden Sie cisco) ein.
+
+Konfigurieren Sie alle Schnittstellen der in Handlungsschritt 2 dokumentierten Geräte.
+
+Weisen Sie allen Schnittstellen mit dem Befehl description eine Beschreibung zu.
+
+Konfigurieren Sie RIPv2 auf den Routern Lichtenberg, Spandau und Köpenick.
+
+Das Mitte - Netz ist ein Stub - Netz (Stub - Netz ist ein Netzwerk, das über nur eine Verbindung zum benachbarten Netzwerk verfügt). Binden Sie es mit einer statischen Route an das Gesamtnetz an. Weisen Sie eine Schnittstelle für die Verbindung zum FTP_Mitte zu. Gleiches gilt für den Standort Lichtenberg. Auch hier sollten Sie eine Schnittstelle für den FTP Server zuweisen (Hierfür bitte einen Switch einsetzen). Weiterhin soll die Möglichkeit bestehen, das die Administratoren aus dem Zweig Administration die eingesetzten Koppelelemente (Standort Mitte) mittels SSHv2 remote verwalten können. Setzen Sie eine ACL, die eben nur die Administratoren berechtigt, SSHv2 einzusetzen.
+
+Die Route zum Internet (ersatzweise die Verbindung zum Host 10.0.0.2/8) wird als statische Default- Route auf allen Routern eingerichtet.
+
+Prüfen Sie, ob die Router Spandau, Köpenick, Mitte und Lichtenberg über die OSI- Schichten 1 – 7 verbunden sind (entsprechende Dokumentation/Pakete im letzten Schritt).
+
+Zeichnen Sie die vier Router- Konfigurationsdateien auf, und speichern Sie diese in einer Textdatei Handlungsschritt3.txt. Fügen Sie am Beginn der Datei folgende Information als Kommentar (!) ein:
+
+Ihren Namen
+Das aktuelle Datum
+Praktische Abschlussprüfung EDB15 - Handlungsschritt 3
+
+Diese Dokumentation dient als Ergebnis für Handlungsschritt 3, drucken Sie aus und fügen Sie sie Ihrer Ausarbeitung bei.
+
+
+
+
+
+
+Handlungsschritt 4:	18 Punkte
+Konfigurieren von NAT, PPP und der ACLs
+Gehen Sie bei der Ausführung von Handlungsschritt 4 folgendermaßen vor:
+Die Durchführung von NAT soll auf dem Router Köpenick erfolgen. Führen Sie folgende Schritte zur Konfiguration dieses Routers aus:
+
+Definieren Sie den NAT – Pool für alle Benutzer.
+
+Ermöglichen Sie die dynamische Quellübersetzung unter Angabe des NAT- Pools und der ACL, die Sie im vorherigen Schritt definiert haben. Der Firmen-WEB-Server soll unter einer festen Adresse immer vom Internet aus erreichbar sein (nur Protokoll HTTP).
+
+Legen Sie die internen und externen NAT- Schnittstellen fest.
+
+Definieren Sie eine ACL, die den Datenverkehr von allen internen Adressen (172.16.0.0/16) ins Internet zulässt, den gesamten restlichen Verkehr aber abweist.
+
+Eine Arbeitsstation ist am FastEthernet Port des Routers Köpenick angeschlossen, um einen ISP- Server zu simulieren. Konfigurieren Sie diese Arbeitsstation/Server wie folgt:
+
+Konfigurieren Sie IP- Adresse und Subnetzmaske mit 10.0.0.2/8
+
+Als Default- Gateway geben Sie die Router LAN- Schnittstelle (10.0.0.1/8) an.
+
+Hinweis: Die Arbeitsstation/Server agiert als WEB- Server. Erzeugen Sie im Simulationsmodus vom Packet Tracer ein HTTP - Paket und senden Sie es an den WEB-Server (da es auf dem simulierten WEB- Server keinen Dienst gibt der antwortet, wird das ankommende HTTP - Paket mit einem roten X verworfen, daher müssen Sie für die Antwort ein weiteres Paket erzeugen!  Nehmen Sie dieses Paket mit in die Dokumentation (letzte Phase) mit auf!
+
+
+
+
+
+
+
+
+Konfigurieren Sie die PPP - Verbindung zwischen Lichtenberg und Mitte wie folgt:
+
+Konfigurieren Sie die seriellen Schnittstellen auf dem Lichtenberg- und Mitte-Router für die Verwendung der PPP- Kapselung.
+
+Verwenden Sie als Authentifizierungsprotokoll CHAP.
+
+Fügen Sie zu Dokumentationszwecken den Benutzernamen und das Passwort, das von CHAP verwendet wird, als Schnittstellenbeschreibung in die Konfiguration mit ein!
+
+Konfigurieren Sie eine ACL, die Datenverkehr von Absenderadressen des Mitte - LANs filtert. Die ACL muss den HTTP- Zugriff auf den ISP zulassen, jeglichen anderen Zugriff auf den ISP verweigern und den gesamten übrigen Datenverkehr an die Zieladressen innerhalb des Firmennetzes erlauben ( denken Sie an den Rückverkehr  ).
+
+Zeichnen Sie die Konfigurationsdateien für die Router Köpenick, Lichtenberg und Mitte auf und fügen Sie einen Ausdruck der Ausarbeitung bei. Fügen Sie am Beginn jeder Datei folgende Information als Kommentar ein:
+
+Ihren Namen
+Das aktuelle Datum
+Praktische Abschlussprüfung EDB15- Handlungsschritt 4
+Den Namen des zur Datei gehörenden Routers
+
+Dokumentieren Sie die NAT- Konfiguration und die ISP- Server- Konfiguration in der unten stehenden Tabelle.
+Diese Dokumentation dient als Ergebnis für Handlungschritt 4, drucken Sie sie aus und fügen Sie sie Ihrer Ausarbeitung bei.
+Element	Konfigurierte Werte
+Köpenick: Name des NAT- Pools
+
+	
+                        
+Köpenick: ACL- Nummer
+
+	    
+Köpenick: Statische Übersetzung für den
+ 
+Firmen WEB- Server	
+
+
+Handlungsschritt 5:	11 Punkte
+Konfigurieren von VLANs und DHCP
+Gehen Sie bei der Ausführung von Handlungsschritt 5 folgendermaßen vor:
+Konfigurieren Sie die LAN- Switche von Lichtenberg wie folgt:
+
+Erstellen Sie drei VLANs mit den Nummern 10, 20 und 30.
+
+Weisen Sie dem VLAN 10 die Ports 1 bis 3 zu.
+
+Weisen Sie dem VLAN 20 die Ports 4 und 5 zu.
+
+Weisen Sie dem VLAN 30 die Ports 6 und 7 zu.
+
+Konfigurieren Sie Port- Security auf den Ports zu den Endgeräten (max. drei MAC-Adressen sollen als gültig angesehen werden).
+
+Konfigurieren Sie die IEEE802.1Q Verbindungen als Etherchannel gemäß      IEEE 802.3ad 
+
+Eine FastEthernet- Schnittstelle des Routers Lichtenberg ist mit einem Port aus dem VLAN10 verbunden. Für die weiteren FastEthernet- Schnittstellen mit den VLANs 20 und 30 konfigurieren Sie für jede Schnittstelle eine aussagekräftige Beschreibung (description)
+
+Mit jedem VLAN ist auf jedem Switch eine Arbeitsstation verbunden. Welche Arbeitsstationen welchem VLAN zugeordnet ist, entnehmen Sie bitte Seite 4.
+
+Konfigurieren Sie die Arbeitsstationen mit entsprechenden IP- Adressen, Standard-Gateway und Namen.
+
+In allen LANs wird DHCP eingesetzt. Konfigurieren Sie die Router wie folgt:
+
+Weisen Sie den FastEthernet- Schnittstellen die erste verfügbare Adresse aus den in Handlungsschritt 2 dokumentierten DHCP- Pools zu.
+
+Konfigurieren Sie die DHCP- Pools auf den Routern. Tragen Sie Ihre Ergebnisse in die unten stehende Tabelle ein.
+
+
+Alle festen Adressen (Server, Gateways) dürfen nicht von DHCP bedient werden!
+
+
+
+
+Konfigurieren Sie die Arbeitsstationen so, dass Sie Ihre IP- Adressen automatisch von DHCP zugewiesen bekommen.
+
+Zeichnen Sie die Konfigurationsdateien der Router erneut auf, und speichern Sie diese. Fügen Sie am Beginn folgende Informationen als Kommentar ein:
+
+Ihren Namen
+Das aktuelle  Datum
+Praktische Abschlussprüfung EDB15 – Handlungsschritt 5
+Name des Routers
+
+Diese Dokumentation dient als Ergebnis für Handlungsschritt 5, drucken Sie sie aus und fügen Sie sie Ihrer Ausarbeitung bei.
+
+Name	Adress - Pools
+Mitte DHCP- Pool 1	
+Mitte DHCP- Pool 2	
+Lichtenberg DHCP- Pool 1	
+
+Lichtenberg DHCP- Pool 2	
+
+Lichtenberg DHCP- Pool 3	
+Spandau DHCP- Pool	
+
+
+
+
+
+
+
+
+
+
+Handlungsschritt 6:	18 Punkte
+Überprüfung und Test
+
+Gehen Sie bei der Ausführung von Handlungsschritt 6 folgendermaßen vor:
+Überprüfen Sie die Kommunikation zwischen den verschiedenen Hosts im Netz. Führen Sie gegebenenfalls eine Fehlersuche für das Netz durch, und beheben Sie alle Probleme. Verwenden Sie dazu den Simulationsmodus und erzeugen Sie entsprechende Szenarien mit Datenpaketen. Die Datenpakete sollten so gewählt werden, dass die gesamte Funktionalität des Netzes demonstriert wird (z. B. VLAN, ACLs, NAT, Etherchannel usw. Das ist nicht mit 5 oder 6  Paketen zu erledigen!). Sollten Sie mehr Zeilen in der Tabelle benötigen, fügen Sie sie an.
+
+Dokumentieren Sie die Ergebnisse der  Tests in der folgenden Tabelle, auch wenn Ihr Netzwerk fehlerfrei ist.
+
+Speichern Sie die running - config der Router Lichtenberg und Mitte jeweils auf den für den Standort vorgesehenen FTP- Server. Benennen Sie die die Dateien mit eindeutigen Namen, z.B. Mitte_config bzw. Lichtenberg_config
+
+Speichern Sie den gesamten Aufbau (incl. Szenarien!) unter dem Namen GESAMTERGEBNIS.pkt ab.
+
+Szenario- Nr.	Paketnummer	Quelle	Ziel	Protokoll	Ergebnis
+					
+					
+					
+					
+					
+					
+					
+ 					
+					
+					
+					
+					
+
+
+Zusammenstellung der Dokumentation:
+Füllen Sie die Tabellen aus und drucken Sie die Ergebnisse aus den Handlungsschritten 1-6  aus (inklusive der Nebenrechnungen, speziell VLSM).
+
+Erstellen Sie die angegebenen Phasen- Dokumentationen und drucken Sie sie aus.
+
+Fügen Sie alles zusammen und geben ab!
+
+Schreiben Sie für die Kontrolle nochmals die Zugangsinformationen auf (Passwort und Namen).
+
+Viel Erfolg!
+
+
+	AB
+	I	II	III
+Handlungsschritt 1:	18 Punkte
+Erstellen Sie einen detaillierten Netzwerkplan!
+		0	04
+1.1 Alle Router und Switche vorhanden? Je Router/Switch 1 Punkt
+	11	0	40
+1.2 Alle seriellen Verbindungen vorhanden und richtig bezeichnet?
+               Je serielle Schnittstelle 1 Punkt	3		04
+                1.3 Wurden IP-Adressen den Schnittstellen zugewiesen?
+                         Ja 1 Punkt, Nein0 Punkte	1	30	
+1.4 Wurden die übrigen Komponenten korrekt bezeichnet?
+        Ja  1 Punkt, Nein  0 Punkte	0
+1		0
+                1.5 Ist die grafische Darstellung insgesamt übersichtlich?
+                       Z.B. Name, passt die Darstellung auf ein DIN-A4 Blatt usw.	
+2	0	0
+
+
+
+ 
+
+
+
+Abbildung 1 zeigt ein mögliches Beispiel!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+	AB
+	I	II	III
+
+Handlungsschritt 2:	20 Punkte
+Ermitteln eines IP-Addressierungsschemas
+		0	04
+2.1 VLSM Berechnung
+                      Je Zeile 1 Punkt (siehe Abbildung 2) Rechenweg ist zu berücksichtigen		9	40
+2.2 Berechnung Mitte-LAN (siehe Abbildung 2)
+               		3	04
+                2.3 Berechnung Lichtenberg-LAN (siehe Abbildung 2)
+		3	
+2.4 Berechnung Spandau-LAN (siehe Abbildung 2)	0
+	3	0
+                2.5 Firmen WEB-Server ( siehe Tabelle 1)
+                       IP  1 Punkt, SM 1 Punkt	
+	2	0
+Tabelle 1 aus Handlungsschritt 2:
+Name und Schnittstelle	IP- Adresse und Subnetzmaske
+Mitte interface FastEthernet0/0	 172.16.4.1 255.255.255.0
+Mitte interface FastEthernet0/1	172.16.5.1 255.255.255.0
+Mitte interface Serial0/0	 172.16.255.246 255.255.255.252
+Lichtenberg interface FastEthernet0/0	172.16.0.1 255.255.254.0
+Lichtenberg interface FastEthernet0/1	 172.16.2.1 255.255.255.0
+Lichtenberg interface Serial0/0	 172.16.255.254 255.255.255.252
+Lichtenberg interface Serial0/1	172.16.255.245 255.255.255.252
+Lichtenberg interface Ethernet1/0	172.16.3.1 255.255.255.0
+Köpenick interface FastEthernet0/0	10.0.0.1 255.0.0.0
+Köpenick interface Serial0/0	172.16.255.249 255.255.255.252
+Köpenick interface Serial0/1	172.16.255.253 255.255.255.252
+Spandau interface Serial0/0	 172.16.255.250 255.255.255.252
+Spandau interface FastEthernet0/0	 172.16.6.1 255.255.255.0
+Firmen WEB- Server 	172.16.6.254 255.255.255.0
+
+
+ 
+Abbildung 2 zeigt die zusammengefassten Lösungen von Handlungsschritt 2
+
+	AB
+	I	II	III
+
+Handlungsschritt 3:	15 Punkte
+Konfiguration der Router
+		0	04
+3.1 Router Hostnamen und Passwörter  Jeweils einen Punkt für alle vier
+Router (Abbildung 4)
+		4	40
+3.2 Konfiguration der Schnittstellen  Ein Bespiel! (Abbildung 3)
+		1	04
+                3.3 Beschreibung der Schnittstellen (description)Ein Beispiel
+		1	
+3.4 RIPv2 auf den Routern Lichtenberg, Spandau, Köoenick (Abbildung 3)
+     Je einen Punkt für einen Korrekten Routeneintrag	0
+	3	0
+                3.5 Mitte Netz: SSHv2 (Abbildung 5)
+                      Line vty 0 15, transport input, SSHv2, crypto key jeweils 1 Punkt	
+	4	0
+             3.6 Statische Default Route (Abbildung 6)
+                      Jeweils einen Punkt für IP-route…		2	
+Information liefert die Ausführung des Befehls show running-config auf den entsprechenden Routern, hier ein Beispiel auf der nächsten Seite:
+ 
+Abbildung 3
+ 
+Abbildung 4
+
+
+
+
+ 
+
+Abbildung 5
+ 
+Abbildung 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	AB
+	I	II	III
+Handlungsschritt 4:	18 Punkte
+Konfiguration von NAT, PPP, ACLs
+		0	04
+4.1 NAT-Pool mit internen und ext. NAT-Schnittstellen(siehe Tabelle 2)
+                     1 Punkt für pool 1, 4 Punkte für inside global / outside local		5	40
+4.2 Konfiguration der ACL-Köpenick (siehe Tabelle 2)
+                1 Punkt für die korrekte Standard IP access list		1	04
+                4.3 Statische Übersetzung für WEB-Server (siehe Tabelle 2)
+                      Je korrekter Zeile 1 Punkt		10	
+Konfiguration von PPP mit CHAP-Authentifizierung (siehe Abbildung 7)
+1 Punkt für encapsulation ppp, 1 Punkt für authentication chap	0
+	2	0
+
+
+Element	Konfigurierte Werte
+Köpenick: Name des NAT- Pools	pool1 198.65.17.1 198.65.17.63 netmask 255.255.255.192
+Inside global     Inside local       Outside local      Outside global
+ 172.16.6.254                         198.65.17.1                  
+ 172.16.6.2                             198.65.17.2                                 
+Köpenick: ACL- Nummer	Standard IP access list 1
+    permit 172.16.0.0 0.0.255.255
+Köpenick: Statische Übersetzung für den 
+Firmen WEB- Server	
+C    10.0.0.0/8 is directly connected, FastEthernet0/0
+     172.16.0.0/16 is variably subnetted, 8 subnets, 4 masks
+R       172.16.0.0/23 [120/1] via 172.16.255.254, 00:00:23, Serial0/1
+R       172.16.2.0/24 [120/1] via 172.16.255.254, 00:00:23, Serial0/1
+R       172.16.3.0/24 [120/1] via 172.16.255.254, 00:00:23, Serial0/1
+R       172.16.4.0/22 [120/1] via 172.16.255.254, 00:00:23, Serial0/1
+R       172.16.6.0/24 [120/1] via 172.16.255.250, 00:00:16, Serial0/0
+R       172.16.255.244/30 [120/1] via 172.16.255.254, 00:00:23, Serial0/1
+C       172.16.255.248/30 is directly connected, Serial0/0
+C       172.16.255.252/30 is directly connected, Serial0/1
+Tabelle 2
+ 
+Abbildung 7 zeigt die Konfiguration PPP mit CHAP-Authentifizierung auf dem Standort Köpenick-Router
+
+
+
+
+
+
+
+	AB
+	I	II	III
+Handlungsschritt 5:	11 Punkte
+Konfiguration der VLANs, Etherchannel und DHCP
+		0	04
+5.1 Erstellen der VLANs 10, 20, 30 (siehe Abbildung 8)
+                      Jeweils einen Punkt für VLAN10,20 und 30		3	40
+5.2 Konfiguration der Etherchannel (siehe Abbildung 9)
+                Jeweils einen Punkt für channel-group sowie Protokoll LACP (active)		2	04
+                5.3 Konfiguration von DHCP (siehe Tabelle 3)
+                       Je korrektem Adress-Pool einen Punkt		6	
+
+ 
+ Abbildung 8
+
+
+
+
+
+
+
+
+
+
+
+Abbildung 9
+
+
+
+
+Name	Adress - Pools
+Mitte DHCP- Pool 1	172.16.4.0 255.255.255.0
+Mitte DHCP- Pool 2	172.16.5.0 255.255.255.0
+Lichtenberg DHCP- Pool 1	network 172.16.0.0 255.255.254.0
+ default-router 172.16.0.1
+Lichtenberg DHCP- Pool 2	network 172.16.2.0 255.255.255.0
+ default-router 172.16.2.1
+Lichtenberg DHCP- Pool 3	network 172.16.3.0 255.255.255.0
+ default-router 172.16.3.1
+Spandau DHCP- Pool	network 172.16.6.0 255.255.255.0
+ default-router 172.16.6.1
+Tabelle 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	AB
+	I	II	III
+Handlungsschritt 6:	18 Punkte
+Überprüfung und Funktionstest
+		0	04
+6.1 Überprüfung der Kommunikation
+                      Min. acht überprüfbare Konnektivitätstests, jeweils 1 Punkt			8
+6.2 Dokumentation der Ergebnisse
+               Alle Tabellen, Topologie-Zeichnung, Name und Datum			6
+                6.3 Die laufende Konfiguration wurde auf einem FTP-Server gespeichert
+                       (Abbildung 10)  Mitte, Spandau, Lichtenberg, Köpenick, Je Eintrag 1 Punkt			4
+
+
+Szenario- Nr.	Paketnummer	Quelle	Ziel	Protokoll	Ergebnis
+0. Pingtests in Lichtenberg	0	PC10 im VLAN10 	172.16.2.2	ICMP	OK
+	1	PC10 im VLAN10	172.16.3.4	ICMP	OK
+	2	PC10 im VLAN10	172.16.0.3	ICMP	OK
+	3	PC20 im VLAN20	172.16.2.5	ICMP	OK
+	4	München	WEB-Server	ICMP	OK
+1. HTTP von AC2 an Webserver und zurück mit NAT	0	AC2	10.0.0.2	TCP	OK
+	1	WEB- Server	198.65.17.1	TCP	OK
+2. Ping Web-Server (ISP) an Köpenick (ohne NAT)	0	WEB- Server	10.0.0.1	ICMP	OK
+3. Ping AC2 an AC1	0	AC2	AC1	ICMP	OK
+4. Ping H1 and K1,K2,K3	0	H1	PC10 im VLAN10	ICMP	OK
+	1	H1	PC20  im VLAN20	ICMP	OK
+	2	H1	PC30 im VLAN30	ICMP	OK
+5. Webuser stellt HTTP Anfrage an CompanyWeb und Rückweg (mit NAT)	0	WEB-Server	198.65.17.1	TCP	OK
+	1	Company WEB	10.0.0.2	TCP	OK
+Ping PC10		VLAN10	SG	ICMP	OK
+PingPC20		VLAN20	SG	ICMP	OK
+					
+					
+					
+					
+					
+					
+					
+Tabelle 4
+
+
+
+
+
+
+
+
+
+
+ 
+Abbildung 10
+
+
+	AB
+	I	II	III
+Gesamt:	100	18	64	18
+		18%	64%	18%
