@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "Sock.h"
 #include "Networking.h"
 #include "TimerManager.h"
@@ -41,30 +39,26 @@ void ASock::Tick(float DeltaTime)
 
 }
 
-//Rama's Start TCP Receiver
 bool ASock::StartTCPReceiver(
 	const FString& YourChosenSocketName,
 	const FString& TheIP,
 	const int32 ThePort
 )
 {
-	//Rama's CreateTCPConnectionListener
 	ListenerSocket = CreateTCPConnectionListener(YourChosenSocketName, TheIP, ThePort);
 
-	//Not created?
 	if (!ListenerSocket)
 	{
 		UE_LOG(LogTemp, Error, TEXT("StartTCPReceiver>> Listen socket could not be created! ~> %s %d"), *TheIP, ThePort);
 		return false;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("StartTCPReceiver>> Listen socket created! ~> %s %d"), *TheIP, ThePort);
-
-	//TODO: Start the Listener! //thread this eventually
+	//Timer
 	GetWorldTimerManager().SetTimer(ConnectionListenTimer, this, &ASock::TCPConnectionListener, 0.01f, true);
 
 	return true;
 }
-//Format IP String as Number Parts
+
 bool ASock::FormatIP4ToNumber(const FString& TheIP, uint8(&Out)[4])
 {
 	//IP Formatting
@@ -83,7 +77,7 @@ bool ASock::FormatIP4ToNumber(const FString& TheIP, uint8(&Out)[4])
 	}
 	return true;
 }
-//Rama's Create TCP Connection Listener
+
 FSocket* ASock::CreateTCPConnectionListener(const FString& YourChosenSocketName, const FString& TheIP, const int32 ThePort, const int32 ReceiveBufferSize)
 {
 	uint8 IP4Nums[4];
@@ -92,19 +86,16 @@ FSocket* ASock::CreateTCPConnectionListener(const FString& YourChosenSocketName,
 		UE_LOG(LogTemp, Error, TEXT("Invalid IP! Expecting 4 parts separated by ."));
 		return false;
 	}
-	//Create Socket
 	FIPv4Endpoint Endpoint(FIPv4Address(IP4Nums[0], IP4Nums[1], IP4Nums[2], IP4Nums[3]), ThePort);
 	FSocket* ListenSocket = FTcpSocketBuilder(*YourChosenSocketName)
 		.AsReusable()
 		.BoundToEndpoint(Endpoint)
 		.Listening(8);
-	//Set Buffer Size
 	int32 NewSize = 0;
 	ListenSocket->SetReceiveBufferSize(ReceiveBufferSize, NewSize);
-	//Done!
 	return ListenSocket;
 }
-//Rama's TCP Connection Listener
+
 void ASock::TCPConnectionListener()
 {
 	//~~~~~~~~~~~~~
@@ -123,13 +114,13 @@ void ASock::TCPConnectionListener()
 	if (ListenerSocket->HasPendingConnection(Pending)&&Pending)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Connection Pending..."));
-		//Already have a Connection? destroy previous
+		
 		if (ConnectionSocket)
 		{
 			ConnectionSocket->Close();
 			ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(ConnectionSocket);
 		}
-		//New Connection receive!
+		
 		ConnectionSocket = ListenerSocket->Accept(*RemoteAddress, TEXT("TODO: Start Kick off Event"));
 
 		if (ConnectionSocket != NULL)
@@ -138,7 +129,7 @@ void ASock::TCPConnectionListener()
 			RemoteAddressForConnection = FIPv4Endpoint(RemoteAddress);
 
 			UE_LOG(LogTemp, Warning, TEXT("Accepted Connection!"));
-			//can thread this too
+			//TIMER
 			GetWorldTimerManager().SetTimer(SocketListenTimer, this, &ASock::TCPSocketListener, 0.01f, true);
 		}
 	}
@@ -151,7 +142,6 @@ FString ASock::StringFromBinaryArray(const TArray<uint8>& BinaryArray)
 	return FString(cstr.c_str());
 }
 
-//Rama's TCP Socket Listener
 void ASock::TCPSocketListener()
 {
 	//~~~~~~~~~~~~~
