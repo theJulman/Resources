@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,11 +11,11 @@ class TCP_API ASock : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+
 	ASock();
 
 protected:
-	// Called when the game starts or when spawned
+
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -53,7 +51,7 @@ public:
 									//Format String IP4 to number array
 	bool FormatIP4ToNumber(const FString& TheIP, uint8(&Out)[4]);
 
-	//Rama's StringFromBinaryArray
+
 	FString StringFromBinaryArray(const TArray<uint8>& BinaryArray);
 
 	FTimerHandle ConnectionListenTimer;
