@@ -1,0 +1,12 @@
+﻿[If, 1,
+[IReset,,2018]
+[FileNameSetNext,"C:\Unity\Object_High.OBJ"][IPress,Tool:Import]
+[FileNameSetNext,"C:\Unity\Object_High2.obj"]
+[IPress,Tool:Export]
+[IPress,Tool:SubTool:Duplicate]
+[ISet,Tool:Geometry:Target Polygons Count,10]
+[IPress,Tool:Geometry:ZRemesher]
+[IPress,Tool:SubTool:ProjectAll]
+[FileNameSetNext,"C:\Unity\Object_Low.obj"]
+[IPress,Tool:Export]
+]
